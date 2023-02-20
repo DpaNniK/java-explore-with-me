@@ -8,7 +8,6 @@ import ru.practicum.dto.StatsOutputDto;
 import ru.practicum.service.StatsServerService;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.List;
 
