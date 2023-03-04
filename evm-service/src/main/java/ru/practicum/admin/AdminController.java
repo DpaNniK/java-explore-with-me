@@ -51,7 +51,7 @@ public class AdminController {
                                                  List<Integer> users,
                                                  @RequestParam(value = "states", required = false)
                                                  List<State> states,
-                                                 @RequestParam(value = "categories")
+                                                 @RequestParam(value = "categories", required = false)
                                                  List<Integer> categories,
                                                  @RequestParam(value = "rangeStart", required = false)
                                                  String rangeStart,
