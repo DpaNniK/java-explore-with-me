@@ -2,6 +2,7 @@ package ru.practicum.event.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -45,7 +46,6 @@ public class EventServiceImpl implements EventService {
     private final CategoryService categoryService;
     private final LocationService locationService;
     private final EventRepository eventRepository;
-
     private final StatsClient statsClient;
     private final String app = "evm-service";
 

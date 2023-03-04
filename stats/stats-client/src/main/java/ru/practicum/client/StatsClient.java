@@ -1,6 +1,9 @@
 package ru.practicum.client;
 
+
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -16,9 +19,15 @@ import java.util.Objects;
 @Service
 @Slf4j
 public class StatsClient {
-    private final String local = "http://localhost:9090";
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final String local;
+    private final RestTemplate restTemplate;
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    @Autowired
+    public StatsClient(@Value("${stats-server.uri}") String local) {
+        this.local = local;
+        this.restTemplate = new RestTemplate();
+    }
 
     public void saveStatistics(StatsDto statsDto) {
         log.info("Запрос на сохранение {}", statsDto);
