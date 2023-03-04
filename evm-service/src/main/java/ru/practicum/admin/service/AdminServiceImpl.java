@@ -176,8 +176,8 @@ public class AdminServiceImpl implements AdminService {
     private Event updateFullEventParamsByAdmin(Event event, UpdateEventAdminRequest updateEvent) {
         if (event.getCategory() != null && !Objects.equals(event.getCategory().getId(),
                 updateEvent.getCategory())) {
-            Category newCategory = CategoryMapper.toCategory(categoryService.
-                    getCategoryById(updateEvent.getCategory()));
+            Category newCategory = CategoryMapper.toCategory(categoryService
+                    .getCategoryById(updateEvent.getCategory()));
             event.setCategory(newCategory);
         }
         if (event.getLocation() != null && !Objects.equals(event.getLocation().getLat(),

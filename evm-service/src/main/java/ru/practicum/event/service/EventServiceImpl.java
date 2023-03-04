@@ -54,15 +54,15 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventFullDto createNewEvent(Integer userId, NewEventDto eventDto) {
         User user = userService.getUserById(userId);
-        if (eventDto.getEventDate() != null && eventDto.getEventDate().
-                isBefore(LocalDateTime.now())) {
+        if (eventDto.getEventDate() != null && eventDto.getEventDate()
+                .isBefore(LocalDateTime.now())) {
             log.info("Невозможно создать событие. Указанная дата {} уже прошла",
                     eventDto.getEventDate());
             throw new RequestError(HttpStatus.CONFLICT, "Невозможно создать событие. " +
                     "Указанная дата " + eventDto.getEventDate() + " уже прошла");
         }
-        Category category = CategoryMapper.
-                toCategory(categoryService.getCategoryById(eventDto.getCategory()));
+        Category category = CategoryMapper
+                .toCategory(categoryService.getCategoryById(eventDto.getCategory()));
         Location location = locationService.saveLocation(eventDto.getLocation());
         Event event = EventMapper.toEvent(user, category, location, eventDto);
         log.info("Создание нового события {} пользователем {}", event, user);
@@ -130,8 +130,8 @@ public class EventServiceImpl implements EventService {
             throw new RequestError(HttpStatus.CONFLICT, "Невозможно изменить событие," +
                     " оно уже опубликовано");
         }
-        if (eventUserRequest.getEventDate() != null && eventUserRequest.getEventDate().
-                isBefore(LocalDateTime.now())) {
+        if (eventUserRequest.getEventDate() != null && eventUserRequest.getEventDate()
+                .isBefore(LocalDateTime.now())) {
             log.info("Невозможно создать событие. Указанная дата {} уже прошла",
                     eventUserRequest.getEventDate());
             throw new RequestError(HttpStatus.CONFLICT, "Невозможно создать событие. " +
@@ -168,8 +168,8 @@ public class EventServiceImpl implements EventService {
         Collection<EventFullDto> resultEventFullDto = new ArrayList<>();
         Collection<Integer> eventIds = new ArrayList<>();
         List<String> uris = new ArrayList<>();
-        Collection<Event> result = eventRepository.
-                findEventsForAdmin(users, states, categories, rangeStart, rangeEnd, from, size);
+        Collection<Event> result = eventRepository
+                .findEventsForAdmin(users, states, categories, rangeStart, rangeEnd, from, size);
         result.forEach(event -> {
             eventIds.add(event.getId());
             uris.add("/event/" + event.getId());
@@ -201,11 +201,11 @@ public class EventServiceImpl implements EventService {
         Map<Integer, Integer> confirmedRequestMap = getConfirmedRequestMap(eventIds);
         Map<Integer, Integer> viewsMap = getViewsMap(userEvents.toList(), uris);
 
-        userEvents.forEach(event -> eventsShort.add(EventMapper.
-                toEventShortDto(event, confirmedRequestMap.getOrDefault(event.getId(), 0),
+        userEvents.forEach(event -> eventsShort.add(EventMapper
+                .toEventShortDto(event, confirmedRequestMap.getOrDefault(event.getId(), 0),
                         viewsMap.getOrDefault(event.getId(), 0))));
-        return eventsShort.stream().sorted(Comparator.comparing(EventShortDto::getViews)).
-                collect(Collectors.toList());
+        return eventsShort.stream().sorted(Comparator.comparing(EventShortDto::getViews))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -224,8 +224,8 @@ public class EventServiceImpl implements EventService {
 
         if (sort != null && sort.equals(SortState.VIEWS)) {
             log.info("Список событий возвращен с сортировкой по просмотрам");
-            return eventsShortDto.stream().sorted(Comparator.comparing(EventShortDto::getViews)).
-                    collect(Collectors.toList());
+            return eventsShortDto.stream().sorted(Comparator.comparing(EventShortDto::getViews))
+                    .collect(Collectors.toList());
         }
         log.info("Список событий возвращен с сортировкой по дате");
         return eventsShortDto;
@@ -276,8 +276,8 @@ public class EventServiceImpl implements EventService {
         }
         if (eventUserRequest.getCategory() != null) {
             log.info("Пользователь изменил категорию события");
-            Category newCat = CategoryMapper.toCategory(categoryService.
-                    getCategoryById(eventUserRequest.getCategory()));
+            Category newCat = CategoryMapper.toCategory(categoryService
+                    .getCategoryById(eventUserRequest.getCategory()));
             event.setCategory(newCat);
         }
         if (eventUserRequest.getLocation() != null &&
@@ -335,8 +335,8 @@ public class EventServiceImpl implements EventService {
     }
 
     private Map<Integer, Integer> getConfirmedRequestMap(Collection<Integer> eventIds) {
-        Collection<EventWithRequestNum> resultConfirmedReq = eventRepository.
-                getConfirmedRequestMap(eventIds, RequestState.CONFIRMED.toString());
+        Collection<EventWithRequestNum> resultConfirmedReq = eventRepository
+                .getConfirmedRequestMap(eventIds, RequestState.CONFIRMED.toString());
 
         return resultConfirmedReq.stream().collect(Collectors.toMap(EventWithRequestNum::getEventId,
                 EventWithRequestNum::getConfirmedRequestSize));
@@ -345,12 +345,12 @@ public class EventServiceImpl implements EventService {
     private Map<Integer, Integer> getViewsMap(Collection<Event> events, List<String> uris) {
         LocalDateTime startTime = getStartTimeForStatistic(events).minusMinutes(1);
         Map<Integer, Integer> resultViewsMap = new HashMap<>();
-        Collection<StatsOutputDto> stats = statsClient.getStats(startTime, LocalDateTime.now().plusMinutes(1).
-                        truncatedTo(ChronoUnit.SECONDS),
+        Collection<StatsOutputDto> stats = statsClient.getStats(startTime, LocalDateTime.now().plusMinutes(1)
+                        .truncatedTo(ChronoUnit.SECONDS),
                 uris, false);
         stats.forEach(statsOutputDto -> resultViewsMap.put(
-                Integer.parseInt(Arrays.stream(statsOutputDto.getUri().split("/")).
-                        collect(Collectors.toList()).get(2)),
+                Integer.parseInt(Arrays.stream(statsOutputDto.getUri().split("/"))
+                        .collect(Collectors.toList()).get(2)),
                 statsOutputDto.getHits()));
         return resultViewsMap;
     }
@@ -367,8 +367,8 @@ public class EventServiceImpl implements EventService {
         if (timePublishedEvent.size() == 0) {
             return LocalDateTime.now().minusMinutes(1).truncatedTo(ChronoUnit.SECONDS);
         }
-        finalTimePublishedEvent = timePublishedEvent.stream().sorted(Comparator.
-                comparing(LocalDateTime::getDayOfYear).reversed()).collect(Collectors.toList());
+        finalTimePublishedEvent = timePublishedEvent.stream().sorted(Comparator
+                .comparing(LocalDateTime::getDayOfYear).reversed()).collect(Collectors.toList());
         return finalTimePublishedEvent.get(0);
     }
 }

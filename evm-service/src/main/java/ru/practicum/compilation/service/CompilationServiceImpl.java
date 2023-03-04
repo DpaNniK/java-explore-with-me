@@ -44,8 +44,8 @@ public class CompilationServiceImpl implements CompilationService {
         log.info("Запрос на получение подборки, где pinned - {}", pinned);
         List<CompilationDto> result = new ArrayList<>();
         from = from / size;
-        Page<Compilation> compilations = compilationRepository.
-                getCompilationsByPinned(pinned, PageRequest.of(from, size));
+        Page<Compilation> compilations = compilationRepository
+                .getCompilationsByPinned(pinned, PageRequest.of(from, size));
         compilations.forEach(compilation -> result.add(CompilationMapper.toCompilationDto(compilation,
                 eventService.getEventShortListWithSort(compilation.getEvents(), false))));
         return result;

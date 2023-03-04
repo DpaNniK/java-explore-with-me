@@ -24,8 +24,8 @@ public class CompilationMapper {
 
     public static CompilationDto toCompilationDto(Compilation compilation, Collection<EventShortDto> eventShorts) {
         CompilationDto compilationDto = new CompilationDto();
-        Collection<EventShortDto> events = eventShorts.stream().sorted(Comparator.comparing(EventShortDto::getViews).
-                reversed()).collect(Collectors.toList());
+        Collection<EventShortDto> events = eventShorts.stream().sorted(Comparator.comparing(EventShortDto::getViews)
+                .reversed()).collect(Collectors.toList());
         compilationDto.setId(compilation.getId());
         compilationDto.setPinned(compilation.isPinned());
         compilationDto.setTitle(compilation.getTitle());

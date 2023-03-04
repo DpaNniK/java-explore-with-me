@@ -43,8 +43,8 @@ public class EventMapper {
 
     public static EventFullDto toEventFullDto(Event event, Integer confirmedRequests, Integer views) {
         EventFullDto eventFullDto = new EventFullDto();
-        eventFullDto.setConfirmedRequests(Objects.
-                requireNonNullElse(confirmedRequests, 0));
+        eventFullDto.setConfirmedRequests(Objects
+                .requireNonNullElse(confirmedRequests, 0));
         eventFullDto.setViews(Objects.requireNonNullElse(views, 0));
         eventFullDto.setId(event.getId());
         eventFullDto.setDescription(event.getDescription());

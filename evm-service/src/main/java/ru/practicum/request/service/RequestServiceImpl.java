@@ -134,8 +134,8 @@ public class RequestServiceImpl implements RequestService {
         }
         log.info("Запрос от пользователя {} на изменения статуса заявок в событии по id - {}",
                 user, requests.getRequestIds());
-        List<Request> resultRequests = new ArrayList<>(requestRepository.
-                getRequestByRequesterIds(requests.getRequestIds()));
+        List<Request> resultRequests = new ArrayList<>(requestRepository
+                .getRequestByRequesterIds(requests.getRequestIds()));
 
         resultRequests.forEach(request -> {
             if (request.getStatus() != RequestState.PENDING) {
