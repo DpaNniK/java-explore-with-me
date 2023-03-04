@@ -63,11 +63,8 @@ public class AdminController {
                                                  @Positive
                                                  @RequestParam(value = "size", defaultValue = "10", required = false)
                                                  Integer size) {
-        EventFullDto eventFullDto = new EventFullDto();
-        eventFullDto.setTitle("testTitle");
-        return List.of(eventFullDto);
-        /*return adminService.findEvents(users, states, categories, rangeStart,
-        rangeEnd, from, size);*/
+
+        return adminService.findEvents(users, states, categories, rangeStart, rangeEnd, from, size);
     }
 
     @PatchMapping("/events/{eventId}")
