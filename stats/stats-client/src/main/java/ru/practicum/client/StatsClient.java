@@ -26,11 +26,12 @@ public class StatsClient {
     }
 
     public List<StatsOutputDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
-        LocalDateTime startFormat = LocalDateTime.parse(start.toString(), dateTimeFormatter);
-        LocalDateTime endFormat = LocalDateTime.parse(end.toString(), dateTimeFormatter);
+        String startFormat = start.format(dateTimeFormatter);
+        String endFormat = end.format(dateTimeFormatter);
         log.info("Запрос на получение статистики с {} по {}, уникальность IP - {}", startFormat, endFormat, unique);
-        ResponseEntity<StatsOutputDto[]> list = restTemplate.getForEntity(local + "/hit?start=" + startFormat +
-                        "&end=" + endFormat + "&unique=" + unique + "uris=" + uris,
+
+        ResponseEntity<StatsOutputDto[]> list = restTemplate.getForEntity(local + "/stats?start=" + startFormat +
+                        "&end=" + endFormat + "&uris=" + uris + "&unique=" + unique,
                 StatsOutputDto[].class);
         return Arrays.asList(Objects.requireNonNull(list.getBody()));
     }
