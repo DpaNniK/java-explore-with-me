@@ -31,7 +31,8 @@ public class StatsServerServiceImpl implements StatsServerService {
     @Override
     public void saveStatistics(StatsDto statsDto) {
         App app = getOrCreateApp(statsDto);
-        log.info("Сохранение запроса " + statsDto.getUri() + " от пользователя с ip - " + statsDto.getIp());
+        log.info("Сохранение в статистику запроса " + statsDto.getUri() +
+                " от пользователя с ip - " + statsDto.getIp());
         StatisticModel statisticModel = StatsMapper.toStaticModel(statsDto, app);
         statsRepository.save(statisticModel);
     }

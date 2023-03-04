@@ -2,10 +2,13 @@ package ru.practicum;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
+import ru.practicum.client.StatsClient;
 
 @SpringBootApplication
-public class EvwServiceApp {
+@Import(StatsClient.class)
+public class EvmServiceApp {
     public static void main(String[] args) {
-        SpringApplication.run(EvwServiceApp.class, args);
+        SpringApplication.run(EvmServiceApp.class, args);
     }
 }

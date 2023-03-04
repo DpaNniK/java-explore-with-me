@@ -11,8 +11,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-//Посоветовали в пачке использовать нативные запросы, чтобы можно было получить нужную дтошку прямо в репозитории
-//Удобно, чтобы не писать jdbc запросы, но может быть можно это как-то более красиво сделать
 @Getter
 @Setter
 @RequiredArgsConstructor

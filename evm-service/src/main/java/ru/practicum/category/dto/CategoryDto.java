@@ -1,4 +1,4 @@
-package ru.practicum.dto;
+package ru.practicum.category.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,10 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class StatsOutputDto {
-    private String app;
-    private String uri;
-    private Integer hits;
+@NoArgsConstructor
+public class CategoryDto {
+    Integer id;
+    String name;
 }

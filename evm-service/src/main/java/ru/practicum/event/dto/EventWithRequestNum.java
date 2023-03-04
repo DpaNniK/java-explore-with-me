@@ -1,4 +1,4 @@
-package ru.practicum.dto;
+package ru.practicum.event.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StatsOutputDto {
-    private String app;
-    private String uri;
-    private Integer hits;
+public class EventWithRequestNum {
+    Integer eventId;
+    Integer confirmedRequestSize;
 }
