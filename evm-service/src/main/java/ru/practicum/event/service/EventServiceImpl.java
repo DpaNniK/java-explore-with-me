@@ -94,7 +94,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventFullDto getFullEventById(Integer id, String ip) {
         Event event = getEventById(id);
-        statsClient.saveStatistics(new StatsDto(app, "/event/" + id, ip, LocalDateTime.now()));
+        statsClient.saveStatistics(new StatsDto(app, "/events/" + id, ip, LocalDateTime.now()));
         log.info("Получен запрос на просмотр события {}", event);
         if (!event.getState().equals(State.PUBLISHED)) {
             log.info("Невозможно получить событие под id {}, статус события {}", id, event.getState());
@@ -104,7 +104,7 @@ public class EventServiceImpl implements EventService {
         eventIds.add(event.getId());
 
         Map<Integer, Integer> confirmedRequestMap = getConfirmedRequestMap(eventIds);
-        Map<Integer, Integer> viewsMap = getViewsMap(List.of(event), List.of("/event/" + event.getId()));
+        Map<Integer, Integer> viewsMap = getViewsMap(List.of(event), List.of("/events/" + event.getId()));
         return EventMapper.toEventFullDto(event, confirmedRequestMap.getOrDefault(id, 0),
                 viewsMap.getOrDefault(event.getId(), 0));
     }
@@ -154,7 +154,7 @@ public class EventServiceImpl implements EventService {
         Collection<Integer> eventIds = new ArrayList<>();
         eventIds.add(eventId);
         Map<Integer, Integer> confirmedRequestMap = getConfirmedRequestMap(eventIds);
-        Map<Integer, Integer> viewsMap = getViewsMap(List.of(event), List.of("/event/" + eventId));
+        Map<Integer, Integer> viewsMap = getViewsMap(List.of(event), List.of("/events/" + eventId));
         return EventMapper.toEventFullDto(event, confirmedRequestMap.getOrDefault(eventId, 0),
                 viewsMap.getOrDefault(eventId, 0));
     }
@@ -172,7 +172,7 @@ public class EventServiceImpl implements EventService {
                 .findEventsForAdmin(users, states, categories, rangeStart, rangeEnd, from, size);
         result.forEach(event -> {
             eventIds.add(event.getId());
-            uris.add("/event/" + event.getId());
+            uris.add("/events/" + event.getId());
         });
 
         Map<Integer, Integer> confirmedRequestMap = getConfirmedRequestMap(eventIds);
@@ -195,7 +195,7 @@ public class EventServiceImpl implements EventService {
         Page<Event> userEvents = eventRepository.findAllFounderEvents(userId, PageRequest.of(from, size));
         userEvents.forEach(event -> {
             eventIds.add(event.getId());
-            uris.add("/event/" + event.getId());
+            uris.add("/events/" + event.getId());
         });
 
         Map<Integer, Integer> confirmedRequestMap = getConfirmedRequestMap(eventIds);
@@ -233,7 +233,7 @@ public class EventServiceImpl implements EventService {
 
 
     private EventFullDto setNewParamsForEvent(Event event, UpdateEventUserRequest eventUserRequest) {
-        Map<Integer, Integer> viewsMap = getViewsMap(List.of(event), List.of("/event/" + event.getId()));
+        Map<Integer, Integer> viewsMap = getViewsMap(List.of(event), List.of("/events/" + event.getId()));
         Map<Integer, Integer> confirmedRequestMap = getConfirmedRequestMap(List.of(event.getId()));
         log.info("Изменение события с id {} основателем", event.getId());
         if (eventUserRequest.getStateAction().equals(NewEventState.CANCEL_REVIEW)) {
@@ -311,7 +311,7 @@ public class EventServiceImpl implements EventService {
         Collection<EventShortDto> eventShortList = new ArrayList<>();
 
         events.forEach(event -> {
-            uris.add("/event/" + event.getId());
+            uris.add("/events/" + event.getId());
             eventIds.add(event.getId());
         });
 
