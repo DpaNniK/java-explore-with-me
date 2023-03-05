@@ -2,6 +2,7 @@ package ru.practicum.event.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Service
 public class EventServiceImpl implements EventService {
 
