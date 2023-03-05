@@ -24,7 +24,7 @@ public class StatsClient {
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
-    public StatsClient(@Value("${stats-client.uri}") String local) {
+    public StatsClient(@Value("${stats-server.uri}") String local) {
         this.local = local;
         this.restTemplate = new RestTemplate();
     }

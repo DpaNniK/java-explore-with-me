@@ -1,6 +1,6 @@
 version: '3.1'
 services:
-  stats-service:
+  stats-server:
     build: stats/stats-service
     image: stats-service
     container_name: stats-service
@@ -10,10 +10,10 @@ services:
       - stats-db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats
-      - STATS_SERVICE_DB_URL=jdbc:postgresql://stats-db:5432/stats
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=iamroot
-
+      - spring.datasource.username=postgres
+      - spring.datasource.password=iamroot
+      - stat-client.name=ewm-main-service
+      - stats-server.uri=http://stats-server:9090
   stats-db:
     image: postgres:14-alpine
     container_name: statistic_database
@@ -27,19 +27,20 @@ services:
       - POSTGRES_PASSWORD=iamroot
 
   ewm-service:
-    build: evm-service
+    build: ewm-service
     image: ewm-service
     container_name: ewm-service
     ports:
       - "8080:8080"
     depends_on:
-      - stats-service
+      - stats-server
       - ewm-db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/ewm-db
-      - EVM_SERVICE_DB_URL=jdbc:postgresql://ewm-db:5432/ewm-db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=iamroot
+      - spring.datasource.url=jdbc:postgresql://ewm-db:5432/ewm-db
+      - spring.datasource.username=postgres
+      - spring.datasource.password=iamroot
+      - stat-client.name=ewm-main-service
+      - stats-server.uri=http://stats-server:9090
 
   ewm-db:
     image: postgres:14-alpine
