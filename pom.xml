@@ -24,7 +24,7 @@
 
 	<modules>
 		<module>stats</module>
-		<module>evm-service</module>
+		<module>ewm-service</module>
 	</modules>
 
 	<dependencyManagement>
