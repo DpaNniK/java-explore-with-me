@@ -8,7 +8,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.dto.EventWithRequestNum;
+import ru.practicum.state.State;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Repository
@@ -23,4 +25,12 @@ public interface EventRepository extends JpaRepository<Event, Integer>, EventRep
 
     Collection<Event> getEventsByIdIn(Collection<Integer> ids);
 
+    @Query("select distinct e from Event e " +
+            "where e.initiator.id in :initiatorIds " +
+            "and e.state = :state " +
+            "and e.eventDate >= :nowDate " +
+            "order by e.eventDate")
+    Collection<Event> getActualEventsForSubscriber(@Param("initiatorIds") Collection<Integer> initiatorIds,
+                                                   @Param("state") State state,
+                                                   @Param("nowDate") LocalDateTime nowDate);
 }

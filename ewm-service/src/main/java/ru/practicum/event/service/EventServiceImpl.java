@@ -26,6 +26,7 @@ import ru.practicum.state.SortState;
 import ru.practicum.state.State;
 import ru.practicum.location.model.Location;
 import ru.practicum.location.service.LocationService;
+import ru.practicum.subscriber.service.SubscriberService;
 import ru.practicum.user.dto.UpdateEventUserRequest;
 import ru.practicum.user.model.User;
 import ru.practicum.user.service.UserService;
@@ -44,6 +45,7 @@ public class EventServiceImpl implements EventService {
     private final UserService userService;
     private final CategoryService categoryService;
     private final LocationService locationService;
+    private final SubscriberService subscriberService;
     private final EventRepository eventRepository;
     private final StatsClient statsClient;
     private final String app = "evm-service";
@@ -229,6 +231,21 @@ public class EventServiceImpl implements EventService {
         }
         log.info("Список событий возвращен с сортировкой по дате");
         return eventsShortDto;
+    }
+
+    //Получение актуальных событий из подписок пользователя,
+    //не раньше текущей даты и со статусом PUBLISHED
+    @Override
+    public Collection<EventShortDto> getActualEventsForSubscriber(Integer userId) {
+        User user = userService.getUserById(userId);
+        log.info("Пользователь {} запросил список событий, " +
+                "организаторами которых являются пользователи из его подписок", user);
+        Collection<Integer> initiatorIds = new ArrayList<>();
+        subscriberService.getInitiatorListForSubscriber(user)
+                .forEach(subscriber -> initiatorIds.add(subscriber.getInitiator().getId()));
+        Collection<Event> events = eventRepository
+                .getActualEventsForSubscriber(initiatorIds, State.PUBLISHED, LocalDateTime.now());
+        return getEventShortListWithSort(events, false);
     }
 
 
