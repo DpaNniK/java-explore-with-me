@@ -1,6 +1,8 @@
 package ru.practicum.client;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,9 +16,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class StatsClient {
-    private final String local = "http://localhost:9090";
+    @Value("${stats-server.uri}")
+    private String local;
     private final RestTemplate restTemplate = new RestTemplate();
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -26,11 +30,12 @@ public class StatsClient {
     }
 
     public List<StatsOutputDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
-        LocalDateTime startFormat = LocalDateTime.parse(start.toString(), dateTimeFormatter);
-        LocalDateTime endFormat = LocalDateTime.parse(end.toString(), dateTimeFormatter);
+        String startFormat = start.format(dateTimeFormatter);
+        String endFormat = end.format(dateTimeFormatter);
         log.info("Запрос на получение статистики с {} по {}, уникальность IP - {}", startFormat, endFormat, unique);
-        ResponseEntity<StatsOutputDto[]> list = restTemplate.getForEntity(local + "/hit?start=" + startFormat +
-                        "&end=" + endFormat + "&unique=" + unique + "uris=" + uris,
+
+        ResponseEntity<StatsOutputDto[]> list = restTemplate.getForEntity(local + "/stats?start=" + startFormat +
+                        "&end=" + endFormat + "&uris=" + uris + "&unique=" + unique,
                 StatsOutputDto[].class);
         return Arrays.asList(Objects.requireNonNull(list.getBody()));
     }
