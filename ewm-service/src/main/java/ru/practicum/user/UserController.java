@@ -60,6 +60,7 @@ public class UserController {
     @PostMapping("/{userId}/subscribe/{initiatorId}")
     public void subscribeToUser(@PathVariable Integer userId,
                                 @PathVariable Integer initiatorId) {
+
         userService.subscribeToUser(userId, initiatorId);
     }
 
@@ -73,7 +74,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{userId}/unsubscribe/{initiatorId}")
     public void unSubscribeToUser(@PathVariable Integer userId,
-                                @PathVariable Integer initiatorId) {
+                                  @PathVariable Integer initiatorId) {
         userService.unSubscribeToUser(userId, initiatorId);
     }
 }
