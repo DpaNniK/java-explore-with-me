@@ -362,6 +362,10 @@
 						"type": "text"
 					}
 				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{request_body}}"
+				},
 				"url": {
 					"raw": "{{baseUrl}}/users/{{subid}}/events",
 					"host": [
@@ -477,6 +481,10 @@
 						"type": "text"
 					}
 				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{request_body}}"
+				},
 				"url": {
 					"raw": "{{baseUrl}}/users/{{subid}}/events",
 					"host": [
