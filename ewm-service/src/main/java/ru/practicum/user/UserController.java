@@ -8,6 +8,8 @@ import ru.practicum.event.dto.EventShortDto;
 import ru.practicum.event.dto.NewEventDto;
 import ru.practicum.event.service.EventService;
 import ru.practicum.user.dto.UpdateEventUserRequest;
+import ru.practicum.user.dto.UserShortDto;
+import ru.practicum.user.service.UserService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -19,6 +21,7 @@ import java.util.Collection;
 @RequestMapping("/users")
 public class UserController {
     private final EventService eventService;
+    private final UserService userService;
 
     @GetMapping("/{userId}/events")
     public Collection<EventShortDto> findAllFounderEvents(@PathVariable Integer userId,
@@ -52,4 +55,26 @@ public class UserController {
         return eventService.changeEventByUser(userId, eventId, eventUserRequest);
     }
 
+    //Эндопинт для подписки на пользователя
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/{userId}/subscribe/{initiatorId}")
+    public void subscribeToUser(@PathVariable Integer userId,
+                                @PathVariable Integer initiatorId) {
+
+        userService.subscribeToUser(userId, initiatorId);
+    }
+
+    //Эндопинт для получения всех подписчиков пользователя
+    @GetMapping("/{userId}/subscribers")
+    public Collection<UserShortDto> getSubscribersForUser(@PathVariable Integer userId) {
+        return userService.getSubscribersForUser(userId);
+    }
+
+    //Эндопит, чтобы отписаться от пользователя
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{userId}/unsubscribe/{initiatorId}")
+    public void unSubscribeToUser(@PathVariable Integer userId,
+                                  @PathVariable Integer initiatorId) {
+        userService.unSubscribeToUser(userId, initiatorId);
+    }
 }

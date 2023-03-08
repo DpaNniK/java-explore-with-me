@@ -40,4 +40,6 @@ public interface EventService {
                                                              Boolean paid, String rangeStart, String rangeEnd,
                                                              Boolean onlyAvailable, SortState sort, Integer from,
                                                              Integer size, String ip);
+
+    Collection<EventShortDto> getActualEventsForSubscriber(Integer userId);
 }

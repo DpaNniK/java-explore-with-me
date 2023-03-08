@@ -53,4 +53,9 @@ public class EventController {
         return eventService.getFullEventById(id, request.getRemoteAddr());
     }
 
+    //Получение списка актуальных событий, опубликованных пользователями из подписок
+    @GetMapping("/subscribers/{userId}")
+    public Collection<EventShortDto> getActualEventsForSubscriber(@PathVariable Integer userId) {
+        return eventService.getActualEventsForSubscriber(userId);
+    }
 }
