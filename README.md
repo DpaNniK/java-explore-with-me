@@ -1,2 +1,8 @@
 # java-explore-with-me
-Template repository for ExploreWithMe project.
+Фича - Подписки. 
+
++ Возможность подписываться на других пользователей и получать список актуальных событий,
+  опубликованных этими пользователями.
++ добавил возможность отписаться от пользователя
+
+pr - https://github.com/DpaNniK/java-explore-with-me/pull/7
